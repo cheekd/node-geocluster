@@ -31,7 +31,9 @@ geocluster.prototype._clean = function(data) {
 };
 
 geocluster.prototype._cluster = function(elements, bias) {
-	
+
+	console.log('Cheekd Custom Cluster');
+
 	var self = this;
 	
 	// set bias to 1 on default
@@ -73,9 +75,13 @@ geocluster.prototype._cluster = function(elements, bias) {
 		elements: []
 	});
 
+	var loopCounter = 0;
+
 	// loop elements and distribute them to clusters
 	var changing = true;
 	while (changing === true) {
+
+
 
 		var new_cluster = false;
 		var cluster_changed = false;
@@ -143,6 +149,13 @@ geocluster.prototype._cluster = function(elements, bias) {
 				cluster.elements = [];
 				return cluster;
 			});
+		}
+
+		// This is to prevent the infinite loop
+		loopCounter = loopCounter + 1;
+		if (loopCounter > 10000) {
+			changing = false;
+			break;
 		}
 		
 	}
