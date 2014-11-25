@@ -61,6 +61,10 @@ geocluster.prototype._cluster = function(elements, bias) {
 	var diff_stdev = Math.sqrt(diff_variance / diffs.length);
 	var threshold = (diff_stdev * bias);
 
+	if(isNaN(threshold)) {
+		threshold = Infinity;
+	}
+
 	var cluster_map = [];
 	
 	// generate random initial cluster map
@@ -96,7 +100,8 @@ geocluster.prototype._cluster = function(elements, bias) {
 			});
 			
 			// is the closest distance smaller than the stddev of elements?
-			if (closest_dist < threshold) {
+			//if (closest_dist < threshold) {
+			if (closest_dist <= threshold) { // Changed for 100% CPU issue, in case the point is the same as
 
 				// put element into existing cluster
 				cluster_map[closest_cluster].elements.push(e);
